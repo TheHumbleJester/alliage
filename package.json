@@ -1,0 +1,43 @@
+{
+  "name": "alliage",
+  "version": "0.0.1",
+  "description": "Framework for building modular JavaScript applications",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc -p tsconfig.json",
+    "lint": "eslint . --ext .js --ext .ts",
+    "lint:fix": "yarn lint -- --fix",
+    "test:unit": "NODE_ENV=test jest --maxWorkers=2 --coverage",
+    "test": "yarn lint && yarn test:unit",
+    "alliage:run": "ts-node src/scripts run",
+    "alliage:build": "ts-node src/scripts build",
+    "alliage:install": "ts-node src/scripts install"
+  },
+  "bin": {
+    "alliage-scripts": "dist/scripts/index.js"
+  },
+  "author": "the.humble.jester@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.1.6",
+    "@types/yargs": "^15.0.0",
+    "typescript": "^3.7.4",
+    "@types/jest": "^24.0.6",
+    "@typescript-eslint/eslint-plugin": "^2.9.0",
+    "@typescript-eslint/parser": "^2.9.0",
+    "@typescript-eslint/typescript-estree": "^2.9.0",
+    "eslint": "^6.7.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "jest": "^24.1.0",
+    "nodemon": "^1.18.10",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.0.0"
+  },
+  "dependencies": {
+    "yargs": "^15.1.0"
+  }
+}
