@@ -8,6 +8,7 @@
     "lint:fix": "yarn lint -- --fix",
     "test:unit": "NODE_ENV=test jest --maxWorkers=2 --coverage",
     "test": "yarn lint && yarn test:unit",
+    "release": "node scripts/release",
     "alliage:run": "ts-node src/scripts run",
     "alliage:build": "ts-node src/scripts build",
     "alliage:install": "ts-node src/scripts install"
