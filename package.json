@@ -1,6 +1,6 @@
 {
   "name": "alliage",
-  "version": "0.0.1",
+  "version": "0.0.1-pre.1",
   "description": "Framework for building modular JavaScript applications",
   "scripts": {
     "build": "rm -rf ./dist && tsc -p tsconfig.json",
