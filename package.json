@@ -1,7 +1,12 @@
 {
   "name": "alliage",
-  "version": "0.0.1-pre.1",
+  "version": "0.0.1-pre.3",
   "description": "Framework for building modular JavaScript applications",
+  "email": "the.humble.jester@gmail.com",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/TheHumbleJester/alliage.git"
+  },
   "scripts": {
     "build": "rm -rf ./dist && tsc -p tsconfig.json",
     "lint": "eslint . --ext .js --ext .ts",
