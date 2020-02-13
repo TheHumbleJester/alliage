@@ -39,7 +39,7 @@ if (versionHasChanged) {
 
   // Creates a tag corresponding to the new version on the master branch
   execSync(`git tag ${currentVersion}`);
-  execSync(`git push tag ${currentVersion}`);
+  execSync(`git push origin ${currentVersion}`);
 } else {
   console.log('No new version detected.');
 }
