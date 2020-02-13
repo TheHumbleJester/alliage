@@ -7,18 +7,38 @@ const pkg = require('../../package.json');
 const BASE_DIR = path.resolve(`${__dirname}/../../`);
 const DIST_DIR = path.resolve(`${BASE_DIR}/dist`);
 
-// Removes useless properties from the package.json
-pkg.scripts = undefined;
-pkg.devDependencies = undefined;
+let versionHasChanged = false;
+const currentVersion = pkg.version;
+try {
+  const previousVersion = JSON.parse(execSync('git show HEAD~1:package.json').toString()).version;
 
-// Run the build script
-execSync('npm run build');
+  if (currentVersion !== previousVersion) {
+    console.log(`New version detected: ${previousVersion} -> ${currentVersion}`);
+    versionHasChanged = true;
+  }
+} catch (e) {
+  // continue regardless of error
+}
 
-// Copy the cleaned version of the 'package.json' file
-fs.writeFileSync(`${DIST_DIR}/package.json`, JSON.stringify(pkg, null, 2));
+if (versionHasChanged) {
+  // Removes useless properties from the package.json
+  pkg.scripts = undefined;
+  pkg.devDependencies = undefined;
 
-// Copies the README.md file
-fs.copyFileSync(`${BASE_DIR}/README.md`, `${DIST_DIR}/README.md`);
+  // Run the build script
+  execSync('npm run build');
 
-// Publishes the 'dist' directory
-execSync('npm publish dist');
+  // Copy the cleaned version of the 'package.json' file
+  fs.writeFileSync(`${DIST_DIR}/package.json`, JSON.stringify(pkg, null, 2));
+
+  // Copies the README.md file
+  fs.copyFileSync(`${BASE_DIR}/README.md`, `${DIST_DIR}/README.md`);
+
+  // Publishes the 'dist' directory
+  execSync('npm publish dist');
+
+  // Creates a tag corresponding to the new version on the master branch
+  execSync(`git push tag ${currentVersion}`);
+} else {
+  console.log('No new version detected.');
+}
