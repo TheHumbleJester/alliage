@@ -1,6 +1,6 @@
 {
   "name": "alliage",
-  "version": "0.0.1-pre.6",
+  "version": "0.0.1-pre.7",
   "description": "Framework for building modular JavaScript applications",
   "email": "the.humble.jester@gmail.com",
   "repository": {
@@ -19,7 +19,7 @@
     "alliage:install": "ts-node src/scripts install"
   },
   "bin": {
-    "alliage-scripts": "dist/scripts/index.js"
+    "alliage-scripts": "scripts/index.js"
   },
   "author": "the.humble.jester@gmail.com",
   "license": "ISC",
