@@ -3,6 +3,6 @@ import { Arguments } from '../core/utils/cli';
 
 export class BuildScript extends AbstractScript {
   public execute(args: Arguments, env: string) {
-    this.getKernel().build(args, env);
+    return this.getKernel().build(args, env);
   }
 }

@@ -58,12 +58,12 @@ describe('core/kernel', () => {
       it('should call the init and install event handlers in the right order', async () => {
         const kernel = new Kernel(modules);
         const args = Arguments.create();
-        await kernel.install('secondModule', args, 'test');
+        await kernel.install(args, 'test');
 
         // Checks that only needed init events handlers have been called only once
         expect(firstModuleEvents.init).toHaveBeenCalledTimes(1);
         expect(secondModuleEvents.init).toHaveBeenCalledTimes(1);
-        expect(thirdModuleEvents.init).not.toHaveBeenCalled();
+        expect(thirdModuleEvents.init).toHaveBeenCalledTimes(1);
 
         // Check that init events handlers have been called with the right arguments
         expect(firstModuleEvents.init).toHaveBeenCalledWith(
@@ -78,10 +78,19 @@ describe('core/kernel', () => {
           expect.any(PrimitiveContainer),
           INITIALIZATION_CONTEXT.INSTALL,
         );
+        expect(thirdModuleEvents.init).toHaveBeenCalledWith(
+          args,
+          'test',
+          expect.any(PrimitiveContainer),
+          INITIALIZATION_CONTEXT.INSTALL,
+        );
 
         // Check that init event handlers have been called in the right order
         expect(firstModuleEvents.init.mock.invocationCallOrder[0]).toBeLessThan(
           secondModuleEvents.init.mock.invocationCallOrder[0],
+        );
+        expect(secondModuleEvents.init.mock.invocationCallOrder[0]).toBeLessThan(
+          thirdModuleEvents.init.mock.invocationCallOrder[0],
         );
 
         // Checks that install events handlers have been called once
@@ -248,7 +257,7 @@ describe('core/kernel', () => {
 
       let error: Error | null = null;
       try {
-        await kernel.install('secondModule', args, 'test');
+        await kernel.install(args, 'test');
       } catch (e) {
         error = e;
       }

@@ -95,8 +95,8 @@ export class Kernel {
   }
   /* eslint-enable no-param-reassign, no-await-in-loop */
 
-  public async install(moduleName: string, args: Arguments, env: string) {
-    await this.triggerEvent('install', args, env, [moduleName]);
+  public async install(args: Arguments, env: string) {
+    await this.triggerEvent('install', args, env);
   }
 
   public async build(args: Arguments, env: string) {

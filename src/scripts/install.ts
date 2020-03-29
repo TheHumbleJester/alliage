@@ -12,6 +12,6 @@ export class InstallScript extends AbstractScript {
         }),
       args,
     );
-    this.getKernel().install(parsedArgs.get('moduleName'), parsedArgs, env);
+    return this.getKernel().install(parsedArgs, env);
   }
 }

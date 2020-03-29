@@ -43,7 +43,7 @@ export abstract class AbstractScript {
     return this.kernel;
   }
 
-  public abstract execute(args?: Arguments, env?: string): void;
+  public abstract execute(args?: Arguments, env?: string): void | Promise<void>;
 }
 
 export interface ScriptConstructor {
