@@ -47,11 +47,7 @@ describe('core/script/run', () => {
         });
 
         expect(installScript.kernel.run).not.toHaveBeenCalled();
-        expect(installScript.kernel.install).toHaveBeenCalledWith(
-          'test_module_name',
-          parsedArguments,
-          'test',
-        );
+        expect(installScript.kernel.install).toHaveBeenCalledWith(parsedArguments, 'test');
         expect(installScript.kernel.build).not.toHaveBeenCalled();
       });
     });
