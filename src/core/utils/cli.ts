@@ -155,7 +155,7 @@ export class ArgumentsParser {
       .command(
         `$0 ${this.builder
           .getArguments()
-          .map((args) => `<${args.name}>`)
+          .map((args) => (args.default ? `[${args.name}]` : `<${args.name}>`))
           .join(' ')}`,
         this.builder.getDescription() as string,
         (subYargs: yargs.Argv) => {
