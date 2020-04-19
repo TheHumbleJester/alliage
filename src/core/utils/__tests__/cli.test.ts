@@ -273,6 +273,7 @@ describe('core/utils/cli', () => {
         .addArgument('test-argument2', {
           describe: 'Test argument 2',
           type: 'string',
+          default: 'default argument 2',
         });
 
       it('should parse arguments according to the provided CommandBuilder', () => {
@@ -308,7 +309,7 @@ describe('core/utils/cli', () => {
         expect(yargsMock.apiMocks.scriptName).toHaveBeenCalledWith('test-command');
 
         expect(yargsMock.apiMocks.command).toHaveBeenCalledWith(
-          '$0 <test-argument1> <test-argument2>',
+          '$0 <test-argument1> [test-argument2]',
           'Test description',
           expect.any(Function),
         );
@@ -321,6 +322,7 @@ describe('core/utils/cli', () => {
         expect(yargsMock.apiMocks.positional).toHaveBeenNthCalledWith(2, 'test-argument2', {
           describe: 'Test argument 2',
           type: 'string',
+          default: 'default argument 2',
         });
         expect(yargsMock.apiMocks.option).toHaveBeenCalledWith('test-option1', {
           describe: 'Test option 1',
