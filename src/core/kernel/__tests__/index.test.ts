@@ -1,7 +1,13 @@
 import { PrimitiveContainer } from '../../primitive-container';
 import { Arguments } from '../../utils/cli';
 import { AbstractModule } from '../../module';
-import { Kernel, ModuleMap, INITIALIZATION_CONTEXT, CircularReferenceError } from '..';
+import {
+  Kernel,
+  ModuleMap,
+  INITIALIZATION_CONTEXT,
+  CircularReferenceError,
+  UnknownModuleError,
+} from '..';
 
 describe('core/kernel', () => {
   describe('Kernel', () => {
@@ -278,6 +284,34 @@ describe('core/kernel', () => {
         error = e;
       }
       expect(error).toBeInstanceOf(CircularReferenceError);
+    });
+
+    it('should throw an error in case of unregistered module', async () => {
+      const modulesWithMissingDep: ModuleMap = {
+        firstModule: [
+          class FirstModule extends AbstractModule {
+            getKernelEventHandlers() {
+              return firstModuleEvents;
+            }
+          },
+          ['unknown-module'],
+        ],
+      };
+
+      const kernel = new Kernel(modulesWithMissingDep);
+      const args = Arguments.create();
+
+      let error;
+      try {
+        await kernel.run(args, 'test');
+      } catch (e) {
+        error = e;
+      }
+
+      expect(error).toBeInstanceOf(UnknownModuleError);
+      expect(error.message).toEqual(
+        'Unknown module "unknown-module".\nThis usually happens when a module relies on a dependency that has not been registered yet.\nPlease check your "alliage-modules.json" file',
+      );
     });
   });
 });

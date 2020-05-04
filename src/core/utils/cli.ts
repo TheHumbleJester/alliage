@@ -87,11 +87,12 @@ export class CommandBuilder {
 
   private options: { [name: string]: ArgumentDescrition };
 
-  private description?: string;
+  private description: string;
 
   private constructor() {
     this.arguments = [];
     this.options = {};
+    this.description = '';
   }
 
   public addOption(name: string, description: ArgumentDescrition) {
