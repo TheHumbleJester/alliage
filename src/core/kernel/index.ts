@@ -45,6 +45,8 @@ enum MODULE_STATE {
 
 export class CircularReferenceError extends Error {}
 
+export class UnknownModuleError extends Error {}
+
 const EVENT_INITIALIZATION_CONTEXTS = {
   init: (null as unknown) as INITIALIZATION_CONTEXT,
   install: INITIALIZATION_CONTEXT.INSTALL,
@@ -77,6 +79,11 @@ export class Kernel {
         }
         modulesStates[moduleName] = MODULE_STATE.LOADING;
         const currentModule = this.modules[moduleName];
+        if (!currentModule) {
+          throw new UnknownModuleError(
+            `Unknown module "${moduleName}".\nThis usually happens when a module relies on a dependency that has not been registered yet.\nPlease check your "alliage-modules.json" file`,
+          );
+        }
         if (currentModule[1].length > 0) {
           this.loadModules(events, currentModule[1], eventHandlers, modulesStates);
         }

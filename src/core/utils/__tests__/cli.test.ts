@@ -108,8 +108,8 @@ describe('core/utils/cli', () => {
         expect(cb.getDescription()).toEqual('Test description');
       });
 
-      it('should return nothing is no description has been set', () => {
-        expect(CommandBuilder.create().getDescription()).toBeUndefined();
+      it('should return an empty string is no description has been set', () => {
+        expect(CommandBuilder.create().getDescription()).toEqual('');
       });
     });
   });
