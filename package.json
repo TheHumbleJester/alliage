@@ -1,11 +1,11 @@
 {
   "name": "alliage",
-  "version": "0.0.1-pre.10",
+  "version": "0.0.1",
   "description": "Framework for building modular JavaScript applications",
   "email": "the.humble.jester@gmail.com",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/TheHumbleJester/alliage.git"
+    "type": "git",
+    "url": "https://github.com/TheHumbleJester/alliage.git"
   },
   "scripts": {
     "build": "rm -rf ./dist && tsc -p tsconfig.json",
@@ -13,7 +13,7 @@
     "lint:fix": "yarn lint -- --fix",
     "test:unit": "NODE_ENV=test jest --maxWorkers=2 --coverage",
     "test": "yarn lint && yarn test:unit",
-    "release": "node scripts/release",
+    "release": "yarn build && sh scripts/release.sh",
     "alliage:run": "ts-node src/scripts run",
     "alliage:build": "ts-node src/scripts build",
     "alliage:install": "ts-node src/scripts install"
@@ -24,13 +24,13 @@
   "author": "the.humble.jester@gmail.com",
   "license": "ISC",
   "devDependencies": {
+    "@types/jest": "^24.0.6",
     "@types/node": "^13.1.6",
     "@types/yargs": "^15.0.0",
-    "typescript": "^3.7.4",
-    "@types/jest": "^24.0.6",
     "@typescript-eslint/eslint-plugin": "^2.9.0",
     "@typescript-eslint/parser": "^2.9.0",
     "@typescript-eslint/typescript-estree": "^2.9.0",
+    "cicd-cli-tools": "^0.3.0",
     "eslint": "^6.7.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -41,7 +41,8 @@
     "jest": "^24.1.0",
     "nodemon": "^1.18.10",
     "prettier": "^1.19.1",
-    "ts-jest": "^24.0.0"
+    "ts-jest": "^24.0.0",
+    "typescript": "^3.7.4"
   },
   "dependencies": {
     "yargs": "^15.1.0"
