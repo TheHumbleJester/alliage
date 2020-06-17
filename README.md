@@ -4,9 +4,7 @@
 [![TheHumbleJester/alliage](https://circleci.com/gh/TheHumbleJester/alliage.svg?style=svg)](https://circleci.com/gh/TheHumbleJester/alliage)
 [![codecov](https://codecov.io/gh/TheHumbleJester/alliage/branch/master/graph/badge.svg)](https://codecov.io/gh/TheHumbleJester/alliage)
 
-<div style="text-align: center; margin: 3rem 0">
-  <img src="./docs/assets/logo.svg" width="70%">
-</div>
+<img align="center" src="./docs/assets/logo.svg" width="70%">
 
 Alliage is a **minimalist**, **modular** and **non-opinionated** NodeJS Framework.<br />
 Behind this complicated description hides a way more simple tool to develop any kind of NodeJS app.
@@ -63,9 +61,7 @@ To make it do things, you'll have to write **modules** containing the logic you 
 
 Before explaining you how to create and register a module, let's have a look to the what's happing in Alliage when you execute a script:
 
-<div style="text-align: center; margin: 3rem 0">
-  <img src="./docs/assets/diagram.svg" width="80%">
-</div>
+<img align="center" src="./docs/assets/diagram.svg" width="80%">
 
 What you can understand of the schema above is that whatever the script you run, Alliage will instanciate the **Kernel** and this kernel will trigger a series of [(not infortunate)](<https://en.wikipedia.org/wiki/A_Series_of_Unfortunate_Events_(TV_series)>) events:
 
@@ -349,7 +345,7 @@ The main philosophy behind Alliage is to make you able to compose your app by ju
 If you have read all the documentation you should have understood that the Alliage framework is really simple.
 Actually, you might even think that it's too simple and you would be right !
 
-But that simplicity, is actually part of the DNA of this tool. It only brings the essential and if you need more, you can create your own modules or use third-party ones !
+But that simplicity is actually part of the DNA of this tool. It only brings the essential and if you need more, you can create your own modules or use third-party ones !
 
 Speaking of that, you might be interested in the official [Alliage Core](https://github.com/TheHumbleJester/alliage-core) modules as they bring a lot of cool features such as:
 
