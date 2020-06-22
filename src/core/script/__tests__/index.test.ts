@@ -18,6 +18,7 @@ describe('core/script', () => {
         module1: {
           module: './relative/path/1',
           deps: ['module2'],
+          envs: ['dev'],
         },
         module2: {
           module: '../relative/path/2',
@@ -26,6 +27,7 @@ describe('core/script', () => {
         module3: {
           module: '/relative/path/3',
           deps: ['module4'],
+          envs: ['dev', 'production'],
         },
         module4: {
           module: 'global-module',
@@ -47,10 +49,10 @@ describe('core/script', () => {
       script.execute();
 
       expect(Kernel).toHaveBeenCalledWith({
-        module1: [{ name: 'module1' }, ['module2']],
-        module2: [{ name: 'module2' }, ['module3']],
-        module3: [{ name: 'module3' }, ['module4']],
-        module4: [{ name: 'module4' }, []],
+        module1: [{ name: 'module1' }, ['module2'], ['dev']],
+        module2: [{ name: 'module2' }, ['module3'], []],
+        module3: [{ name: 'module3' }, ['module4'], ['dev', 'production']],
+        module4: [{ name: 'module4' }, [], []],
       });
       expect(kernelMock).toBeInstanceOf(Kernel);
     });

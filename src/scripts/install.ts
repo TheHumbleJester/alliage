@@ -1,17 +1,8 @@
 import { AbstractScript } from '../core/script';
-import { Arguments, ArgumentsParser, CommandBuilder } from '../core/utils/cli';
+import { Arguments } from '../core/utils/cli';
 
 export class InstallScript extends AbstractScript {
   public execute(args: Arguments, env: string) {
-    const parsedArgs = ArgumentsParser.parse(
-      CommandBuilder.create()
-        .setDescription('Install a module')
-        .addArgument('moduleName', {
-          describe: 'The module to install',
-          type: 'string',
-        }),
-      args,
-    );
-    return this.getKernel().install(parsedArgs, env);
+    return this.getKernel().install(args, env);
   }
 }

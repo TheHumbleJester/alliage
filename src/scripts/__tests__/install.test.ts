@@ -31,24 +31,12 @@ describe('core/script/run', () => {
     describe('#execute', () => {
       it("should call the 'install' method of the kernel", () => {
         const args = Arguments.create();
-        const installScript = new InstallScript() as any;
+        const buildScript = new InstallScript() as any;
+        buildScript.execute(args, 'test');
 
-        const parsedArguments = Arguments.create({ moduleName: 'test_module_name' });
-        argumentsParserMock.mockReturnValue(parsedArguments);
-
-        installScript.execute(args, 'test');
-
-        expect(argumentsParserMock).toHaveBeenCalledWith(commandBuilderMock, args);
-
-        expect(commandBuilderMock.setDescription).toHaveBeenCalledWith('Install a module');
-        expect(commandBuilderMock.addArgument).toHaveBeenCalledWith('moduleName', {
-          describe: 'The module to install',
-          type: 'string',
-        });
-
-        expect(installScript.kernel.run).not.toHaveBeenCalled();
-        expect(installScript.kernel.install).toHaveBeenCalledWith(parsedArguments, 'test');
-        expect(installScript.kernel.build).not.toHaveBeenCalled();
+        expect(buildScript.kernel.build).not.toHaveBeenCalled();
+        expect(buildScript.kernel.install).toHaveBeenCalledWith(args, 'test');
+        expect(buildScript.kernel.run).not.toHaveBeenCalled();
       });
     });
   });

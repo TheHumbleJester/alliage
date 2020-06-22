@@ -35,7 +35,7 @@ export type ModuleEventHandlers = {
 export type KernelEvent = keyof KernelEventHandlers;
 
 export interface ModuleMap {
-  [moduleName: string]: [ModuleConstructor, string[]];
+  [moduleName: string]: [ModuleConstructor, string[], string[]];
 }
 
 enum MODULE_STATE {
@@ -114,12 +114,19 @@ export class Kernel {
     await this.triggerEvent('run', args, env);
   }
 
+  private getModuleNamesByEnv(env: string) {
+    return Object.keys(this.modules).filter((name) => {
+      const envs = this.modules[name][2];
+      return envs.length > 0 ? envs.includes(env) : true;
+    });
+  }
+
   /* eslint-disable no-await-in-loop */
   private async triggerEvent(
     eventName: KernelEvent,
     args: Arguments,
     env: string,
-    modulesToLoad: string[] = Object.keys(this.modules),
+    modulesToLoad: string[] = this.getModuleNamesByEnv(env),
   ) {
     const eventHandlers = this.loadModules(
       new Set<KernelEvent>(['init', eventName]),
