@@ -277,7 +277,26 @@ As you have seen in the event handler of a module, you actually receive an `env`
 
 This `env` variable defaults to `"production"` but can take any value you want. It's here to bring more context about the environment in which the script is executed.
 
-It's not actively used in the Alliage framework for now but will be used later to give you the possibility to load modules only in specific environments.
+Modules can be configured to load only in a specific environment, like so:
+
+```json
+{
+  "my-first-module": {
+    "module": "./src/my-first-module",
+    "deps": ["my-second-module"],
+    "envs": ["production", "test"]
+  },
+  "my-second-module": {
+    "module": "./src/my-first-module",
+    "deps": [],
+    "envs": ["development"]
+  }
+}
+```
+
+In the above exemple, `my-first-module` will only be loaded if the environment is `"production"` or `"test"` while `my-second-module` will only be loaded if the environmnent is `development`.
+
+If no `envs` property is set for a module or its value is an empty array, then the module will be loaded whatever is the environment.
 
 ## Share information between modules
 
@@ -362,4 +381,3 @@ Speaking of that, you might be interested in the official [Alliage Core](https:/
 - etc...
 
 And if you prefer writing your apps in TypeScript, there's also a [module](https://github.com/TheHumbleJester/alliage-typescript) for that 😉
-

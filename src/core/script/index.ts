@@ -9,6 +9,7 @@ export interface ModulesDefinition {
   [key: string]: {
     module: string;
     deps: string[];
+    envs?: string[];
   };
 }
 
@@ -31,6 +32,7 @@ export abstract class AbstractScript {
             ? require(path.resolve(def.module))
             : require(def.module),
           def.deps,
+          def.envs ?? [],
         ],
       }),
       {},

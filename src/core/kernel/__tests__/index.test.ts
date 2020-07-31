@@ -41,6 +41,7 @@ describe('core/kernel', () => {
           }
         },
         ['secondModule'],
+        [],
       ],
       secondModule: [
         class SecondModule extends AbstractModule {
@@ -49,6 +50,7 @@ describe('core/kernel', () => {
           }
         },
         ['firstModule'],
+        [],
       ],
       firstModule: [
         class FirstModule extends AbstractModule {
@@ -56,6 +58,7 @@ describe('core/kernel', () => {
             return firstModuleEvents;
           }
         },
+        [],
         [],
       ],
     };
@@ -252,10 +255,54 @@ describe('core/kernel', () => {
       });
     });
 
+    it('should only load modules whose envs list is empty or contains the current execution env', async () => {
+      const modulesWithEnvs: ModuleMap = {
+        firstModule: [
+          class FirstModule extends AbstractModule {
+            getKernelEventHandlers() {
+              return firstModuleEvents;
+            }
+          },
+          [],
+          [],
+        ],
+        secondModule: [
+          class SecondModule extends AbstractModule {
+            getKernelEventHandlers() {
+              return secondModuleEvents;
+            }
+          },
+          [],
+          ['test'],
+        ],
+        thirdModule: [
+          class ThirdModule extends AbstractModule {
+            getKernelEventHandlers() {
+              return thirdModuleEvents;
+            }
+          },
+          [],
+          ['production', 'dev'],
+        ],
+      };
+
+      const kernel = new Kernel(modulesWithEnvs);
+      const args = Arguments.create();
+
+      await kernel.run(args, 'test');
+
+      expect(firstModuleEvents.init).toHaveBeenCalledTimes(1);
+      expect(secondModuleEvents.init).toHaveBeenCalledTimes(1);
+      expect(thirdModuleEvents.init).not.toHaveBeenCalled();
+
+      expect(secondModuleEvents.run).toHaveBeenCalledTimes(1);
+      expect(thirdModuleEvents.run).not.toHaveBeenCalled();
+    });
+
     it('should throw error in case of circular reference', async () => {
       const modulesWithCircularReference: ModuleMap = {
-        firstModule: [class FirstModule extends AbstractModule {}, ['secondModule']],
-        secondModule: [class SecondModule extends AbstractModule {}, ['firstModule']],
+        firstModule: [class FirstModule extends AbstractModule {}, ['secondModule'], []],
+        secondModule: [class SecondModule extends AbstractModule {}, ['firstModule'], []],
       };
 
       const kernel = new Kernel(modulesWithCircularReference);
@@ -295,6 +342,7 @@ describe('core/kernel', () => {
             }
           },
           ['unknown-module'],
+          [],
         ],
       };
 
