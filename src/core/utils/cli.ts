@@ -5,6 +5,9 @@ const CLI_PATTERNS: [RegExp, string][] = [
   [/yarn\.js$/, 'yarn'],
 ];
 
+const EMPTY_VALUE = '@__EMTPY_VALUE__@';
+const FIRST_ARGUMENT = '@__FIRST_ARGUMENT__@';
+
 type ParsedArgs = { [key: string]: string | number | boolean };
 
 export class Arguments {
@@ -143,10 +146,22 @@ export class ArgumentsParser {
   protected parse() {
     const builderArgs = this.builder.getArguments();
     const builderOptions = Object.entries(this.builder.getOptions());
+    const hasArgs = builderArgs.length > 0;
+    const hasOptions = builderOptions.length > 0;
 
-    if (builderArgs.length <= 0 && builderOptions.length <= 0) {
+    if (!hasArgs && !hasOptions) {
       return this.arguments;
     }
+
+    const argumentList = hasArgs
+      ? builderArgs
+      : [
+          {
+            name: FIRST_ARGUMENT,
+            describe: 'no arguments required',
+            default: EMPTY_VALUE,
+          },
+        ];
 
     const { _, $0, ...parsedArgs } = yargs(this.arguments.getRemainingArgs())
       .parserConfiguration({
@@ -154,8 +169,7 @@ export class ArgumentsParser {
       })
       .scriptName(this.arguments.getCommand())
       .command(
-        `$0 ${this.builder
-          .getArguments()
+        `$0 ${argumentList
           .map((args) => (args.default ? `[${args.name}]` : `<${args.name}>`))
           .join(' ')}`,
         this.builder.getDescription() as string,
@@ -166,9 +180,17 @@ export class ArgumentsParser {
       )
       .help().argv;
 
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, camelcase
+    const { [FIRST_ARGUMENT]: _firstArg, ...args } = parsedArgs;
     return this.arguments.createChild(
-      parsedArgs as any,
-      _,
+      args as any,
+      // eslint-disable-next-line no-nested-ternary
+      hasArgs
+        ? _
+        : parsedArgs[FIRST_ARGUMENT] === EMPTY_VALUE
+        ? _
+        : [parsedArgs[FIRST_ARGUMENT] as string, ..._],
       builderArgs.map(({ name }) => parsedArgs[name]).join(' '),
     );
   }
