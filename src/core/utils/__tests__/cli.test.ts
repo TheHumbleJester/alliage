@@ -351,6 +351,56 @@ describe('core/utils/cli', () => {
         expect(args).toBe(baseArgs);
       });
 
+      it('should allow to have no expected arguments', () => {
+        const yargsMock = (yargs as unknown) as YargsMock;
+        // case1: without remaining args
+        yargsMock.setExpectedArgs({
+          '@__FIRST_ARGUMENT__@': '@__EMTPY_VALUE__@',
+          'test-option': 'test',
+          _: [],
+        });
+
+        const builder1 = CommandBuilder.create().addOption('test-option', {
+          describe: 'Test option',
+        });
+
+        const args1 = ArgumentsParser.parse(builder1, Arguments.create({}, ['--test-option=test']));
+
+        expect(yargsMock.apiMocks.command).toHaveBeenCalledWith(
+          '$0 [@__FIRST_ARGUMENT__@]',
+          '',
+          expect.any(Function),
+        );
+
+        expect(args1.getRemainingArgs()).toEqual([]);
+        expect(args1.get('test-option')).toEqual('test');
+
+        // case2: with remaining args
+        yargsMock.setExpectedArgs({
+          '@__FIRST_ARGUMENT__@': 'arg1',
+          'test-option': 'test',
+          _: ['arg2', 'arg3'],
+        });
+
+        const builder2 = CommandBuilder.create().addOption('test-option', {
+          describe: 'Test option',
+        });
+
+        const args2 = ArgumentsParser.parse(
+          builder2,
+          Arguments.create({}, ['--test-option=test', 'arg1', 'arg2', 'arg3']),
+        );
+
+        expect(yargsMock.apiMocks.command).toHaveBeenCalledWith(
+          '$0 [@__FIRST_ARGUMENT__@]',
+          '',
+          expect.any(Function),
+        );
+
+        expect(args2.getRemainingArgs()).toEqual(['arg1', 'arg2', 'arg3']);
+        expect(args2.get('test-option')).toEqual('test');
+      });
+
       it("should allow the 'baseArgs' argument to be optional", () => {
         const args = ArgumentsParser.parse(CommandBuilder.create());
 
